@@ -21,16 +21,19 @@ class UsersController extends Controller
         ]);
     }
 
+    //登录
     public function create()
     {
         return view('users.create');
     }
 
+    //个人中心
     public function show(User $user)
     {
         return view('users.show', compact('user'));
     }
 
+    //注册
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -50,12 +53,14 @@ class UsersController extends Controller
         return redirect()->route('users.show', [$user]);
     }
 
+    //编辑
     public function edit(User $user)
     {
         $this->authorize('update', $user);
         return view('users.edit', compact('user'));
     }
 
+    //保存编辑
     public function update(User $user, Request $request)
     {
         $this->authorize('update', $user);
@@ -75,5 +80,12 @@ class UsersController extends Controller
 
         session()->flash('success', '个人资料更新成功！');
         return redirect()->route('users.show', $user);
+    }
+
+    //用户列表
+    public function index()
+    {
+        $users = User::paginate(6);
+        return view('users.index', compact('users'));
     }
 }
