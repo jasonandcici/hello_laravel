@@ -13,7 +13,7 @@ class UsersController extends Controller
     public function __construct()
     {
         $this->middleware('auth', [
-            'except' => ['create', 'store']
+            'except' => ['create', 'store', 'index']
         ]);
 
         $this->middleware('guest', [
@@ -87,5 +87,14 @@ class UsersController extends Controller
     {
         $users = User::paginate(6);
         return view('users.index', compact('users'));
+    }
+
+    //删除用户
+    public function destroy(User $user)
+    {
+        $this->authorize('destroy', $user);
+        $user->delete();
+        session()->flash('success', '成功删除用户！');
+        return back();
     }
 }
