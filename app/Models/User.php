@@ -72,4 +72,14 @@ class User extends Authenticatable
     {
         return $this->statuses()->orderBy('created_at', 'desc');
     }
+
+    public function followers()
+    {
+        return $this->belongsTo(User::class, 'followers', 'user_id', 'follower_id');
+    }
+
+    public function followings()
+    {
+        return $this->belongsTo(User::class, 'followers', 'follower_id', 'user_id');
+    }
 }
